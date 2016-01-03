@@ -14,16 +14,28 @@
 
 int		get_next_line(int const fd, char **line)
 {
-	static int	nb = 0;
+	static t_dbllist	lst = {0, NULL, NULL};
+	char				buf[BUFF_SIZE + 1];
+	int					i;
+	int					j;
 
+	i = 0;
+	j = 0;
 	if (fd == -1)
 		return (-1);
-	while((ret = read(fd, line, BUFF_SIZE)))
+	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
-		line[ret] = '\0';
+		buf[ret] = '\0';
+		while (i < ret && buf[i] != '\n')
+			*line[j++] = buf[i++];
+		if (buf[i] == '\n')
+		{
+			ft_lstdbladd(&lst, *line, ft_strlen(*line));
+			break ;
+		}
 	}
 	
-	nb++; //variale per;ettant de reprendre la lecture du fichier la ou l'on s'etait arrete. puisque lq fonction est appele en boucle dans le main
+	 //variale per;ettant de reprendre la lecture du fichier la ou l'on s'etait arrete. puisque lq fonction est appele en boucle dans le main
 }
 
 // return (1) : ligne lue
