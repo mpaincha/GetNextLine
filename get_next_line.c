@@ -18,24 +18,28 @@ int		get_next_line(int const fd, char **line)
 	char				buf[BUFF_SIZE + 1];
 	int					i;
 	int					j;
+	char				*next;
 
 	i = 0;
 	j = 0;
+	*next = 0;
 	if (fd == -1)
 		return (-1);
-	while ((ret = read(fd, buf, BUFF_SIZE)))
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0 && 
+		(next = ft_strchr(buf, '\n')) == 0)
 	{
 		buf[ret] = '\0';
-		while (i < ret && buf[i] != '\n')
+		while (i < ret)
 			*line[j++] = buf[i++];
-		if (buf[i] == '\n')
-		{
-			ft_lstdbladd(&lst, *line, ft_strlen(*line));
-			break ;
-		}
 	}
+	ft_lstdbladd(&lst, *line, ft_strlen(*line));
+	next++;
+	if (ret == -1)
+		return (-1);
+	else if (ret == 0)
+		return (0);
 	
-	 //variale per;ettant de reprendre la lecture du fichier la ou l'on s'etait arrete. puisque lq fonction est appele en boucle dans le main
+	 //variable permettant de reprendre la lecture du fichier la ou l'on s'etait arrete. puisque lq fonction est appele en boucle dans le main
 }
 
 // return (1) : ligne lue
