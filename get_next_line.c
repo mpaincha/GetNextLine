@@ -19,18 +19,59 @@ int		get_next_line(int const fd, char **line)
 	int					i;
 	int					j;
 	char				*next;
+	char				*unfinished;
+	char				**lines;
+	char				**begin;
 
 	i = 0;
 	j = 0;
-	*next = 0;
+	next = NULL;
+	unfinished = NULL;
+	lines = NULL;
+	begin = NULL;
 	if (fd == -1)
 		return (-1);
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0 && 
-		(next = ft_strchr(buf, '\n')) == 0)
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
-		while (i < ret)
-			*line[j++] = buf[i++];
+		if (lines != NULL)
+		{
+			*line = lines[0];
+			if (lines[1])
+				lines = lines[1];
+			else
+				free(lines);
+			
+			return (1);
+		}
+		if (next = ft_strchr(buf, '\n')) == NULL)
+		{
+			if (*unfinished == 0)
+			{
+				*unfinished = ft_strnew(BUFF_SIZE + 1);
+				ft_strcpy(unfinished, buf);
+			}
+			else
+				unfinished = ft_strjoin(unfinished, buf);
+		}
+		else
+		{
+			if (*unfinished == 0)
+			{
+				lines = ft_strsplit(buf, '\n');
+				begin = lines;
+				*line = lines[0];
+				if (lines[1])
+					lines = lines[1];
+				else
+					free(lines);
+				return (1);
+			}
+			else
+			{
+				//a traiter : ft_strncat(unfinished, buf,);
+			}
+		}
 	}
 	ft_lstdbladd(&lst, *line, ft_strlen(*line));
 	next++;
