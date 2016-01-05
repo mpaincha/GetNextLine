@@ -14,14 +14,40 @@
 
 int		get_next_line(int const fd, char **line)
 {
+	static char		**lines;
+	char			buf[BUFF_SIZE + 1];
+	int				start;
+
+	if (fd == -1)
+		return (-1);
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	{
+		buf[ret] = '\0';
+		if (!lines)
+			lines = ft_strnew();
+		while (buf[i] != '\0')
+		{
+			if (buf[i] == '\n')
+				start = i;
+			i++;
+		}
+		if ((start = ft_strchr(buf, '\n')) != 0)
+
+
+	}
+}
+/*int		get_next_line(int const fd, char **line)
+{
 	static t_dbllist	lst = {0, NULL, NULL};
 	char				buf[BUFF_SIZE + 1];
 	int					i;
 	int					j;
 	char				*next;
 	char				*unfinished;
+	int					*finished;
 	char				**lines;
 	char				**begin;
+	char				**toline;
 
 	i = 0;
 	j = 0;
@@ -29,35 +55,52 @@ int		get_next_line(int const fd, char **line)
 	unfinished = NULL;
 	lines = NULL;
 	begin = NULL;
+	*finished = 1;
+	toline = 0;
 	if (fd == -1)
 		return (-1);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
-		if (lines != NULL)
+		if (next = ft_strchr(buf, '\n')) == NULL) //pas de \n dans le ligne
 		{
-			*line = lines[0];
-			if (lines[1])
-				lines = lines[1];
-			else
-				free(lines);
-			
-			return (1);
-		}
-		if (next = ft_strchr(buf, '\n')) == NULL)
-		{
-			if (*unfinished == 0)
+			if (*finished == 1) //ligne davant fini
 			{
 				*unfinished = ft_strnew(BUFF_SIZE + 1);
 				ft_strcpy(unfinished, buf);
+				ft_lstdbladd(&lst, unfinished, ft_strlen(unfinished));
+				finished = 0;
 			}
 			else
-				unfinished = ft_strjoin(unfinished, buf);
+				lst.tail.content = ft_strjoin(unfinished, buf);
 		}
-		else
+		else  // contient un ou plusieurs \n
 		{
-			if (*unfinished == 0)
+			if (*finished == 1) //ligne d'avant fini
 			{
+				lines = ft_strsplit(buf, '\n');
+				while (*lines)
+				{
+					ft_lstdbladd(&lst, (*lines)[i], ft_strlen((*lines)[i]));
+					i++;
+				}
+				if (lines != NULL)
+				{
+					*line = lines[0];
+					if (lines[1])
+						lines = lines[1];
+					else
+					{
+						free(lines);
+						lines = ft_strsplit(buf, '\n');
+						begin = lines;
+						*line = lines[0];
+						if (lines[1])
+							lines = lines[1];
+						else
+							free(lines);
+
+				}
 				lines = ft_strsplit(buf, '\n');
 				begin = lines;
 				*line = lines[0];
@@ -67,6 +110,9 @@ int		get_next_line(int const fd, char **line)
 					free(lines);
 				return (1);
 			}
+
+				
+			
 			else
 			{
 				//a traiter : ft_strncat(unfinished, buf,);
@@ -82,7 +128,7 @@ int		get_next_line(int const fd, char **line)
 	
 	 //variable permettant de reprendre la lecture du fichier la ou l'on s'etait arrete. puisque lq fonction est appele en boucle dans le main
 }
-
+*/
 // return (1) : ligne lue
 // return (-1 ) : erreur lecture fichier
 // return (0) : lecture terminee
