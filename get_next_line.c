@@ -16,24 +16,42 @@ int		get_next_line(int const fd, char **line)
 {
 	static char		**lines;
 	char			buf[BUFF_SIZE + 1];
-	int				start;
+	int				i;
 
+	lines = NULL;
+	i = 0;
 	if (fd == -1)
 		return (-1);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
-		if (!lines)
-			lines = ft_strnew();
+		//rempli lines
 		while (buf[i] != '\0')
 		{
-			if (buf[i] == '\n')
-				start = i;
-			i++;
+			if (!(*lines))
+			{
+				*lines = ft_strnew(ft_strlen(buf));
+				ft_strcpy(*lines, &buf);
+			}
+			else
+			{
+				if (start != 0)
+					*lines = ft_strjoin(*lines, &buf);
 		}
-		if ((start = ft_strchr(buf, '\n')) != 0)
-
-
+		//renvoi la ligne
+		if (ft_strchr(buf, '\n') != 0)
+		{
+			while ((*lines)[i] != '\n')
+			{
+				(*line)[i] = (*lines)[i];
+				i++;
+			}
+			if ((*lines)[i + 1])
+				*lines = ft_strsub(*lines, i + 1, ft_strlen(lines) - (i + 1));
+			else
+				ft_strdel(lines);
+		}
+		else
 	}
 }
 /*int		get_next_line(int const fd, char **line)
