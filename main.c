@@ -21,12 +21,15 @@ int main(int argc, char const *argv[])
 		return (0);
 	else
 	{
-		fd = open("fichier", O_RDONLY);
+		fd = open(argv[1], O_RDONLY);
 		if (fd == -1)
 			return (-1);
 		while (get_next_line(fd, &line))
-			
-
+		{
+			ft_putstr("MAIN LIGNE : \n");
+			ft_putstr(line);
+			ft_putstr("\n");
+		}
 	}
 	return (0);
 }

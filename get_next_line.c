@@ -12,145 +12,83 @@
 
 #include "get_next_line.h"
 
-int		get_next_line(int const fd, char **line)
+static	void	filllines(char *buf, char **lines)
 {
-	static char		**lines;
-	char			buf[BUFF_SIZE + 1];
-	int				i;
+	int		i;
 
-	lines = NULL;
 	i = 0;
-	if (fd == -1)
-		return (-1);
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	while (buf[i] != '\0')
 	{
-		buf[ret] = '\0';
-		//rempli lines
-		while (buf[i] != '\0')
+		ft_putstr("boucle fillines   \n");
+		if (*lines == 0)
 		{
-			if (!(*lines))
-			{
-				*lines = ft_strnew(ft_strlen(buf));
-				ft_strcpy(*lines, &buf);
-			}
-			else
-			{
-				if (start != 0)
-					*lines = ft_strjoin(*lines, &buf);
-		}
-		//renvoi la ligne
-		if (ft_strchr(buf, '\n') != 0)
-		{
-			while ((*lines)[i] != '\n')
-			{
-				(*line)[i] = (*lines)[i];
-				i++;
-			}
-			if ((*lines)[i + 1])
-				*lines = ft_strsub(*lines, i + 1, ft_strlen(lines) - (i + 1));
-			else
-				ft_strdel(lines);
+			ft_putstr("lines NULL\n");
+			*lines = ft_strnew(ft_strlen(buf));
+			ft_strcpy(*lines, buf);
+			ft_putstr("lines affichage\n");
+			ft_putstr(*lines);
+			ft_putstr("\n");
 		}
 		else
+		{
+			ft_putstr("lines non NULL\n");
+			*lines = ft_strjoin(*lines, buf);
+			ft_putstr("lines affichage\n");
+			ft_putstr(*lines);
+			ft_putstr("\n");
+		}
+		i++;
 	}
 }
-/*int		get_next_line(int const fd, char **line)
-{
-	static t_dbllist	lst = {0, NULL, NULL};
-	char				buf[BUFF_SIZE + 1];
-	int					i;
-	int					j;
-	char				*next;
-	char				*unfinished;
-	int					*finished;
-	char				**lines;
-	char				**begin;
-	char				**toline;
 
+static void		sendingline(char **lines, char **line)
+{	
+	int				i;
+	
 	i = 0;
-	j = 0;
-	next = NULL;
-	unfinished = NULL;
-	lines = NULL;
-	begin = NULL;
-	*finished = 1;
-	toline = 0;
+	*line = ft_strnew(ft_strlen(*lines));
+	while ((*lines)[i] != '\n')
+	{
+		(*line)[i] = (*lines)[i];
+		i++;
+	}
+	ft_putstr("LINE affichage\n");
+	ft_putstr(*line);
+	ft_putstr("\n");
+	if ((*lines)[i + 1])
+		*lines = ft_strsub(*lines, i + 1, ft_strlen(*lines) - (i + 1));
+	else
+		ft_strdel(lines);
+}
+
+int				get_next_line(int const fd, char **line)
+{
+	static char		*lines = NULL;
+	char			buf[BUFF_SIZE + 1];
+	int				ret;
+
+	ret = 0;
 	if (fd == -1)
 		return (-1);
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0 && ft_strchr(buf, '\n') == 0)
 	{
+		ft_putstr("boucle while\n");
 		buf[ret] = '\0';
-		if (next = ft_strchr(buf, '\n')) == NULL) //pas de \n dans le ligne
-		{
-			if (*finished == 1) //ligne davant fini
-			{
-				*unfinished = ft_strnew(BUFF_SIZE + 1);
-				ft_strcpy(unfinished, buf);
-				ft_lstdbladd(&lst, unfinished, ft_strlen(unfinished));
-				finished = 0;
-			}
-			else
-				lst.tail.content = ft_strjoin(unfinished, buf);
-		}
-		else  // contient un ou plusieurs \n
-		{
-			if (*finished == 1) //ligne d'avant fini
-			{
-				lines = ft_strsplit(buf, '\n');
-				while (*lines)
-				{
-					ft_lstdbladd(&lst, (*lines)[i], ft_strlen((*lines)[i]));
-					i++;
-				}
-				if (lines != NULL)
-				{
-					*line = lines[0];
-					if (lines[1])
-						lines = lines[1];
-					else
-					{
-						free(lines);
-						lines = ft_strsplit(buf, '\n');
-						begin = lines;
-						*line = lines[0];
-						if (lines[1])
-							lines = lines[1];
-						else
-							free(lines);
-
-				}
-				lines = ft_strsplit(buf, '\n');
-				begin = lines;
-				*line = lines[0];
-				if (lines[1])
-					lines = lines[1];
-				else
-					free(lines);
-				return (1);
-			}
-
-				
-			
-			else
-			{
-				//a traiter : ft_strncat(unfinished, buf,);
-			}
-		}
+		filllines(buf, &lines);	
 	}
-	ft_lstdbladd(&lst, *line, ft_strlen(*line));
-	next++;
-	if (ret == -1)
-		return (-1);
-	else if (ret == 0)
+	if (ret == 0)
+	{
+		if (lines)
+		{
+			sendingline(&lines, line);
+			return (1);
+		}
 		return (0);
-	
-	 //variable permettant de reprendre la lecture du fichier la ou l'on s'etait arrete. puisque lq fonction est appele en boucle dans le main
+	}
+	else
+	{
+		filllines(buf, &lines);		
+		sendingline(&lines, line);
+		return (1);
+	}
 }
-*/
-// return (1) : ligne lue
-// return (-1 ) : erreur lecture fichier
-// return (0) : lecture terminee
-
-// resultat renvoye sans le \n
-
-//utilisation des variables static preconise
