@@ -28,7 +28,7 @@ static void		sendingline(char **lines, char **line)
 	i = 0;
 	endline = ft_strchr(*lines, '\n');
 	if (endline != NULL)
-		*line = ft_strnew(ft_strchr(*lines, '\n') - (*lines));
+		*line = ft_strnew(endline - (*lines));
 	else
 		*line = ft_strnew(ft_strlen(*lines));
 	while ((*lines)[i] != '\n' && (*lines)[i] != '\0')
@@ -48,7 +48,7 @@ int				get_next_line(int const fd, char **line)
 	char			buf[BUFF_SIZE + 1];
 	int				ret;
 
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0 && ft_strchr(buf, '\n') == 0)
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0 && ft_strchr(buf, '\n') == NULL)
 	{
 		buf[ret] = '\0';
 		filllines(buf, &lines);
@@ -57,8 +57,7 @@ int				get_next_line(int const fd, char **line)
 	{
 		if (lines == NULL)
 			return (0);
-		else
-			sendingline(&lines, line);
+		sendingline(&lines, line);
 	}
 	else if (ft_strchr(buf, '\n') != NULL)
 	{
