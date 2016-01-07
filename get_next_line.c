@@ -6,7 +6,7 @@
 /*   By: mpaincha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/03 11:34:39 by mpaincha          #+#    #+#             */
-/*   Updated: 2016/01/03 11:34:41 by mpaincha         ###   ########.fr       */
+/*   Updated: 2016/01/07 12:01:21 by mpaincha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,19 @@ int				get_next_line(int const fd, char **line)
 	char			buf[BUFF_SIZE + 1];
 	int				ret;
 
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0 && ft_strchr(buf, '\n') == NULL)
+	while (line != NULL && (ret = read(fd, buf, BUFF_SIZE)) > 0
+	&& ft_strchr(buf, '\n') == NULL)
 	{
 		buf[ret] = '\0';
 		filllines(buf, &lines);
 	}
-	if (ret == 0)
+	if (ret == 0 && line != NULL)
 	{
 		if (lines == NULL)
 			return (0);
 		sendingline(&lines, line);
 	}
-	else if (ft_strchr(buf, '\n') != NULL)
+	else if (ft_strchr(buf, '\n') != NULL && line != NULL)
 	{
 		buf[ret] = '\0';
 		filllines(buf, &lines);

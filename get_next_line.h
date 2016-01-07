@@ -6,7 +6,7 @@
 /*   By: mpaincha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/03 11:34:46 by mpaincha          #+#    #+#             */
-/*   Updated: 2016/01/03 11:34:49 by mpaincha         ###   ########.fr       */
+/*   Updated: 2016/01/07 12:01:31 by mpaincha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# define BUFF_SIZE 20
+# define BUFF_SIZE 100000
 
 int		get_next_line(int const fd, char **line);
 
