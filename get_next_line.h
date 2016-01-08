@@ -17,14 +17,15 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# define BUFF_SIZE 45
+# define BUFF_SIZE 4096
+# define LINES (((t_lines *)(tmp->content))->lines)
 
-typedef struct 		s_lines
+typedef struct		s_lines
 {
 	char			*lines;
 	int				fd;
 }					t_lines;
 
-int		get_next_line(int const fd, char **line);
+int					get_next_line(int const fd, char **line);
 
 #endif

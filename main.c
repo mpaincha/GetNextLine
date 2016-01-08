@@ -17,10 +17,10 @@ int		main(int argc, char const *argv[])
 	int		fd;
 	char	*line;
 
-	if (argc == 2)
+	if (argc == 4)
 	{
 		fd = open(argv[1], O_RDONLY);
-		if (fd == -1)
+		if (fd == -1 || fd1 == -1 || fd2 == -1)
 			return (-1);
 		while (get_next_line(fd, &line))
 		{
@@ -29,6 +29,5 @@ int		main(int argc, char const *argv[])
 			ft_putstr("\n");
 		}
 	}
-	while (1);
 	return (0);
 }

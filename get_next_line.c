@@ -41,14 +41,14 @@ static	void	filllines(char *buf, int const fd, t_list **lst)
 	stlines.fd = 0;
 	if ((tmp = findfd(fd, *lst)))
 	{
-		if (((t_lines *)(tmp->content))->lines)
+		if (LINES)
 		{
-			tmplines = ((t_lines *)(tmp->content))->lines;
-			((t_lines *)(tmp->content))->lines = ft_strjoin(tmplines, buf);
+			tmplines = LINES;
+			LINES = ft_strjoin(tmplines, buf);
 			free(tmplines);
 		}
 		else
-			((t_lines *)(tmp->content))->lines = ft_strdup(buf);
+			LINES = ft_strdup(buf);
 	}
 	else
 	{
@@ -71,7 +71,7 @@ static void		ft_delelem(t_list **lst, t_list *to_del)
 		if (tmp == to_del)
 		{
 			next = tmp->next;
-			ft_strdel(&(((t_lines *)(tmp->content))->lines));
+			ft_strdel(&(LINES));
 			ft_memdel((void **)tmp);
 			if (prev == NULL)
 				*lst = next;
@@ -92,22 +92,18 @@ static void		sendingline(t_list **lst, int const fd, char **line)
 
 	i = 0;
 	tmp = findfd(fd, *lst);
-	endline = ft_strchr(((t_lines *)(tmp->content))->lines, '\n');
-	if (endline != NULL)
-		*line = ft_strnew(endline - (((t_lines *)(tmp->content))->lines));
-	else
-		*line = ft_strnew(ft_strlen(((t_lines *)(tmp->content))->lines));
-	while ((((t_lines *)(tmp->content))->lines)[i] != '\n'
-	&& (((t_lines *)(tmp->content))->lines)[i] != '\0')
+	endline = ft_strchr(LINES, '\n');
+	*line = endline ? ft_strnew(endline - LINES) \
+						: ft_strnew(ft_strlen(LINES));
+	while (LINES[i] != '\n' && LINES[i] != '\0')
 	{
-		(*line)[i] = (((t_lines *)(tmp->content))->lines)[i];
+		(*line)[i] = (LINES)[i];
 		i++;
 	}
-	if ((((t_lines *)(tmp->content))->lines)[i + 1])
+	if ((LINES)[i + 1])
 	{
-		tmplines = ((t_lines *)(tmp->content))->lines;
-		((t_lines *)(tmp->content))->lines = ft_strsub(tmplines, i + 1,
-			ft_strlen(tmplines) - (i + 1));
+		tmplines = LINES;
+		LINES = ft_strsub(tmplines, i + 1, ft_strlen(tmplines) - (i + 1));
 		free(tmplines);
 	}
 	else
