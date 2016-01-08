@@ -6,7 +6,7 @@
 /*   By: mpaincha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/03 11:34:46 by mpaincha          #+#    #+#             */
-/*   Updated: 2016/01/07 12:01:31 by mpaincha         ###   ########.fr       */
+/*   Updated: 2016/01/07 15:20:05 by mpaincha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,13 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# define BUFF_SIZE 100000
+# define BUFF_SIZE 45
+
+typedef struct 		s_lines
+{
+	char			*lines;
+	int				fd;
+}					t_lines;
 
 int		get_next_line(int const fd, char **line);
 
