@@ -25,8 +25,10 @@ int		main(int argc, char const *argv[])
 		while (get_next_line(fd, &line))
 		{
 			ft_putstr(line);
+			free(line);
 			ft_putstr("\n");
 		}
 	}
+	while (1);
 	return (0);
 }

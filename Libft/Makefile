@@ -78,7 +78,7 @@ ft_lstdbladd.c \
 ft_lstdbldel.c \
 ft_lstdblnew.c
 SRCO = $(SRC:.c=.o)
-HEADERS = .
+HEADERS = includes
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
@@ -87,7 +87,7 @@ all: $(NAME)
 re: fclean all
 
 %.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS)
+	$(CC) -o $@ -c $< $(CFLAGS) -I $(HEADERS)
 
 $(NAME): $(SRCO)
 	ar rc $@ $^

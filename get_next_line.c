@@ -6,7 +6,7 @@
 /*   By: mpaincha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/03 11:34:39 by mpaincha          #+#    #+#             */
-/*   Updated: 2016/01/07 12:01:21 by mpaincha         ###   ########.fr       */
+/*   Updated: 2016/01/08 15:49:08 by mpaincha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,18 @@ static	void	filllines(char *buf, int const fd, t_list **lst)
 {
 	t_lines		stlines;
 	t_list		*tmp;
+	char		*tmplines;
 
 	stlines.lines = NULL;
 	stlines.fd = 0;
 	if ((tmp = findfd(fd, *lst)))
 	{
 		if (((t_lines *)(tmp->content))->lines)
-			((t_lines *)(tmp->content))->lines = ft_strjoin(
-				((t_lines *)(tmp->content))->lines, buf);
+		{
+			tmplines = ((t_lines *)(tmp->content))->lines;
+			((t_lines *)(tmp->content))->lines = ft_strjoin(tmplines, buf);
+			free(tmplines);
+		}
 		else
 			((t_lines *)(tmp->content))->lines = ft_strdup(buf);
 	}
@@ -56,9 +60,9 @@ static	void	filllines(char *buf, int const fd, t_list **lst)
 
 static void		ft_delelem(t_list **lst, t_list *to_del)
 {
-	t_list	*tmp;
-	t_list	*next;
-	t_list	*prev;
+	t_list		*tmp;
+	t_list		*next;
+	t_list		*prev;
 
 	tmp = *lst;
 	prev = NULL;
@@ -84,6 +88,7 @@ static void		sendingline(t_list **lst, int const fd, char **line)
 	int		i;
 	char	*endline;
 	t_list	*tmp;
+	char	*tmplines;
 
 	i = 0;
 	tmp = findfd(fd, *lst);
@@ -100,12 +105,13 @@ static void		sendingline(t_list **lst, int const fd, char **line)
 	}
 	if ((((t_lines *)(tmp->content))->lines)[i + 1])
 	{
-		((t_lines *)(tmp->content))->lines = ft_strsub(
-			((t_lines *)(tmp->content))->lines, i + 1,
-			ft_strlen(((t_lines *)(tmp->content))->lines) - (i + 1));
+		tmplines = ((t_lines *)(tmp->content))->lines;
+		((t_lines *)(tmp->content))->lines = ft_strsub(tmplines, i + 1,
+			ft_strlen(tmplines) - (i + 1));
+		free(tmplines);
 	}
 	else
-		ft_delelem(lst, findfd(fd, *lst));
+		ft_delelem(lst, tmp);
 }
 
 int				get_next_line(int const fd, char **line)
