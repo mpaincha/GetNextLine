@@ -29,6 +29,5 @@ int		main(int argc, char const *argv[])
 			ft_putstr("\n");
 		}
 	}
-	while (1);
 	return (0);
 }
