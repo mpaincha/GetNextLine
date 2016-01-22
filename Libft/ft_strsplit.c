@@ -37,6 +37,7 @@ static char		*ft_putword(char const *s, size_t *i, char c)
 		*i = *i + 1;
 		j++;
 	}
+	word[j] = '\0';
 	return (word);
 }
 
@@ -65,6 +66,6 @@ char			**ft_strsplit(char const *s, char c)
 			j++;
 		}
 	}
-	str[j] = 0;
+	str[j] = NULL;
 	return (str);
 }

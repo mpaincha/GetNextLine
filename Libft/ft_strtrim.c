@@ -21,18 +21,16 @@ char	*ft_strtrim(char const *s)
 	i = 0;
 	if (s == NULL)
 		return (NULL);
-	str = ft_strnew(ft_strlen(s));
 	lg_str = 0;
 	while (s[i] && (s[i] == '\t' || s[i] == '\n' || s[i] == ' '))
 		i++;
-	if (s[i] && s[i] != '\t' && s[i] != '\n' && s[i] != ' ')
-	{
-		str = ft_strsub(s, i, ft_strlen(s));
-		i++;
-	}
-	lg_str = ft_strlen(str) - 1;
-	while (lg_str > 0 && (str[lg_str] == '\t' || str[lg_str] == '\n'
-		|| str[lg_str] == ' '))
-		str[lg_str--] = '\0';
+	lg_str = ft_strlen(s + i) - 1;
+	while (s[i] && (s[lg_str + i] == '\t' || s[lg_str + i] == '\n'
+		|| s[lg_str + i] == ' '))
+		lg_str--;
+	str = ft_strnew(lg_str + 1);
+	if (!str)
+		return (NULL);
+	ft_strncpy(str, s + i, lg_str + 1);
 	return (str);
 }

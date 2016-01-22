@@ -22,7 +22,9 @@ char	*ft_itoa(int n)
 	len = ft_intlen(n);
 	i = 0;
 	nb = (unsigned int)n;
-	str = ft_strnew(len + 1);
+	str = ft_strnew(len);
+	if (!str)
+		return (NULL);
 	if (n < 0)
 	{
 		nb = -n;
