@@ -81,6 +81,7 @@ static void		ft_delelem(t_list **lst, t_list *to_del)
 		prev = tmp;
 		tmp = tmp->next;
 	}
+	ft_memdel((void **)&prev);
 }
 
 static void		sendingline(t_list **lst, int const fd, char **line)
@@ -108,6 +109,7 @@ static void		sendingline(t_list **lst, int const fd, char **line)
 	}
 	else
 		ft_delelem(lst, tmp);
+
 }
 
 int				get_next_line(int const fd, char **line)
