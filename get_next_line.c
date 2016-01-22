@@ -109,7 +109,6 @@ static void		sendingline(t_list **lst, int const fd, char **line)
 	}
 	else
 		ft_delelem(lst, tmp);
-
 }
 
 int				get_next_line(int const fd, char **line)
